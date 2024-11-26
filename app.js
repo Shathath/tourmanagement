@@ -26,13 +26,8 @@ Above format is called JSON envelope
     }
 })*/
 
-// git remote add origin https://github.com/Shathath/tourmanagement.git
-// git branch -M main
-// git push -u origin main
-
-
-// Handle get tour request
-app.get('/api/v1/tours', (req,res) => {
+const getAllTours = (req,res) => {
+    
     res
         .status(200)
         .json({
@@ -41,22 +36,15 @@ app.get('/api/v1/tours', (req,res) => {
                 tours : tours
             }
         })
+}
 
-});
-
-// Handle post tour request
-
-app.post('/api/v1/tours', (req,res) => {
+const createTour = (req,res) => {
     
-    console.log( req.body );
-
     const tourId = tours[tours.length - 1].id + 1;
 
     const newTour = Object.assign({ id : tourId }, req.body );
 
     tours.push( newTour );
-
-    console.log( tours )
 
     fs.writeFile(`${__dirname}/dev-data/tours-simple.json`, JSON.stringify(tours), (err) => {
         
@@ -70,7 +58,15 @@ app.post('/api/v1/tours', (req,res) => {
                 }
             })
     } )
-})
+}
+
+
+// Handle get tour request
+app.get('/api/v1/tours', getAllTours );
+
+// Handle post tour request
+
+app.post('/api/v1/tours', createTour)
 
 app.listen(port, ()=>{
     console.log(`app started at ${port}`)
