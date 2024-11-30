@@ -4,27 +4,11 @@ const express = require("express");
 
 const app = express();
 
-//Middleware
-
-// Middleware used to sit in between the req and response cycle and middleware used to modify the request object
-
-// Everything is middleware
-
-// use method used to define middleware/ added to middleware stack
 app.use( express.json() )
 
 const port = 8000;
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`));
-
-/*
-Above format is called JSON envelope
-{
-    status : "success",
-    data : {
-        tours : tours
-    }
-})*/
 
 const getAllTours = (req,res) => {
     
@@ -60,13 +44,69 @@ const createTour = (req,res) => {
     } )
 }
 
+const deleteTour = (req, res) => {
+    res.status(201).json({
+        status : "success",
+        message : "Deletion successful"
+    })
+}
 
-// Handle get tour request
-app.get('/api/v1/tours', getAllTours );
+const getAllUsers = (req,res) => {
+    res.status(500).json({
+        status : 'error',
+        message : "This route is not handled yet!!"
+    })
+}
 
-// Handle post tour request
+const createUser = (req,res) => {
+    res.status(500).json({
+        status : 'error',
+        message : "This route is not handled yet!!"
+    })
+}
 
-app.post('/api/v1/tours', createTour)
+const getUser = (req,res) => {
+    res.status(500).json({
+        status : 'error',
+        message : "This route is not handled yet!!"
+    })
+}
+
+
+
+const updateUser = (req,res) => {
+    res.status(500).json({
+        status : 'error',
+        message : "This route is not handled yet!!"
+    })
+}
+
+const deleteUser = (req,res) => {
+    res.status(500).json({
+        status : 'error',
+        message : "This route is not handled yet!!"
+    })
+}
+
+app.route('/api/v1/tours')
+    .get(getAllTours)
+    .post(createTour);
+
+app.route('/api/v1/tours/:id')
+    .delete(deleteTour);
+
+
+// User api route
+app.route("/api/v1/users")
+    .get(getAllUsers)
+    .post(createUser);
+
+app.route("/api/v1/users/:id")
+    .get(getUser)
+    .patch(updateUser)
+    .delete(deleteUser);
+
+
 
 app.listen(port, ()=>{
     console.log(`app started at ${port}`)
